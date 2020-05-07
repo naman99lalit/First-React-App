@@ -8,5 +8,4 @@ Basic React App which contains the following features:
 ## Steps to run the Application:
 
 1. Clone the repository 
-2. run "npm install"
-3. run "npm start"
+2. run "npm start"

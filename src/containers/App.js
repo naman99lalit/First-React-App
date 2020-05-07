@@ -3,6 +3,7 @@ import CardList from '../components/CardList';
 import SearchBox from '../components/SearchBox';
 import './App.css';
 import Scroll from '../components/Scroll';
+import ErrorBoundary from '../components/ErrorBoundary';
 
 // Now, In this App, we have to add a feature where a search box is there and based on it we have to display
 // the robots. But, the problem is that how will the two components be able to talk to each other since they are seperate 
@@ -66,7 +67,10 @@ class App extends Component {
                 <h1 className="f1">Robo Friends</h1>
                 <SearchBox searchChange={this.onSearchChange}/>
                 <Scroll>
+                    {/* Error Boundary is used to check for errors for a component */}
+                    <ErrorBoundary>
                     <CardList robots = {filterRobots}/>
+                    </ErrorBoundary>
                 </Scroll>
             </div>
             );

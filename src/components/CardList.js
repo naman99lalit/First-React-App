@@ -20,6 +20,9 @@ import Card from './Card';
 //     );
 // }
 const CardList = ({robots}) => {
+    // if(true){
+    //     throw new Error('NOOOOOOO!');
+    // }
     return (
         <div>
         {
