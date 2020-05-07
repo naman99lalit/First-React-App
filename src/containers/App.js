@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import CardList from './CardList';
-import {robots} from './robots';
-import SearchBox from './SearchBox';
+import CardList from '../components/CardList';
+import SearchBox from '../components/SearchBox';
 import './App.css';
+import Scroll from '../components/Scroll';
 
 // Now, In this App, we have to add a feature where a search box is there and based on it we have to display
 // the robots. But, the problem is that how will the two components be able to talk to each other since they are seperate 
@@ -22,16 +22,31 @@ import './App.css';
 //      );
 // }
 
+// The activities that are called here are in the order:
+// 1. constructor
+// 2. render
+// 3. componentDidMount
+// 4. render (because we are making changes in the componentDidMount and render changes everytime)
 
 class App extends Component {
     constructor(){
         super()
         // We will create the state object now. The things inside the state can change.
         this.state = {
-            robots: robots,
+            robots: [],
             searchfield: ''
         }
     }
+
+    componentDidMount() {
+        // Here we are fetching data from the website
+        fetch('https://jsonplaceholder.typicode.com/users').then(response =>{
+            return response.json();
+        }).then(users=>{
+            this.setState({robots: users});
+        })
+    }
+
     onSearchChange = (event) => {
         // Here we are assigning the searchfield with the values that we are getting from the function call
         this.setState({ searchfield: event.target.value })
@@ -39,16 +54,23 @@ class App extends Component {
     }
     //  While using classes in react, we have to use render function to return the values
     render(){
+        const { robots, searchfield} = this.state;
         const filterRobots = this.state.robots.filter(robot =>{
-            return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
+            return robot.name.toLowerCase().includes(searchfield.toLowerCase());
         })
-        return (
-            <div className="tc">
-               <h1 className="f1">Robo Friends</h1>
-               <SearchBox searchChange={this.onSearchChange}/>
-               <CardList robots = {filterRobots}/>
-           </div>
-        );
+        if(!robots.length){
+            return <h3>Loading..</h3>
+        }else{
+            return (
+                <div className="tc">
+                <h1 className="f1">Robo Friends</h1>
+                <SearchBox searchChange={this.onSearchChange}/>
+                <Scroll>
+                    <CardList robots = {filterRobots}/>
+                </Scroll>
+            </div>
+            );
+        }
     }
 }
 export default App;
